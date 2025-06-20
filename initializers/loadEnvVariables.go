@@ -8,7 +8,7 @@ import (
 
 func LoadEnvVariables() {
 	// Load environment variables from .env file
-	err := godotenv.Load()
+	err := godotenv.Load("development.env")
 	if err != nil {
 		log.Println("no .env file found, using default environment variables")
 	}

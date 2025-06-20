@@ -84,7 +84,7 @@ func Login(c *gin.Context) {
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"role": employee.Role,
-		"exp":  time.Now().Add(time.Minute * 1).Unix(), // Token expires in 1 minutes
+		"exp":  time.Now().Add(time.Minute * 60).Unix(), // Token expires in 1 minutes
 	})
 
 	// Sign and get the complete encoded token as a string using the secret
@@ -93,7 +93,7 @@ func Login(c *gin.Context) {
 		c.JSON(500, gin.H{"error": "Failed to generate token"})
 		return
 	}
-	initializers.RedisClient.Set(initializers.Ctx, tokenString, employee.Role, time.Minute*1)
+	initializers.RedisClient.Set(initializers.Ctx, tokenString, employee.Role, time.Minute*60)
 	println("Token stored in Redis with key:", initializers.RedisClient.Get(initializers.Ctx, tokenString).Val())
 	c.SetCookie("Authorization", tokenString, 3600, "/", "", true, true)
 
