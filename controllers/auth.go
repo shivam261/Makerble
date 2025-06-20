@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github/shivam261/ClinicManagement/models"
+	"github/shivam261/ClinicManagement/repositories"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -42,34 +43,15 @@ func Register(c *gin.Context) {
 	body.Password = string(hashedPassword)
 
 	// Create a new user in the database
-
-	if body.Role == "doctor" {
-
-		doctor := models.Employee{
-			Role:     body.Role,
-			Name:     body.Name,
-			Email:    body.Email,
-			Password: body.Password,
-		}
-		var err error
-		if err = initializers.DB.Create(&doctor).Error; err != nil {
-
-			c.JSON(409, gin.H{"error": "Failed to register doctor. try using a different email"})
-			return
-		}
-		c.JSON(200, gin.H{"message": "Doctor registered successfully"})
-	} else {
-		receptionist := models.Employee{
-			Role:     body.Role,
-			Name:     body.Name,
-			Email:    body.Email,
-			Password: body.Password,
-		}
-		if err := initializers.DB.Create(&receptionist).Error; err != nil {
-			c.JSON(409, gin.H{"error": "Failed to register receptionist. kindly use a different email"})
-			return
-		}
-		c.JSON(200, gin.H{"message": "Receptionist registered successfully"})
+	employee := &models.Employee{
+		Role:     body.Role,
+		Name:     body.Name,
+		Email:    body.Email,
+		Password: string(hashedPassword),
+	}
+	if err := repositories.NewEmployeeRepository().Create(employee); err != nil {
+		c.JSON(409, gin.H{"error": "Failed to register " + body.Role + ". Try using a different email"})
+		return
 	}
 
 }
@@ -87,9 +69,12 @@ func Login(c *gin.Context) {
 
 	var employee models.Employee
 
-	if err := initializers.DB.Where("email = ?", body.Email).First(&employee).Error; err != nil {
+	if emp, err := repositories.NewEmployeeRepository().FindByEmail(body.Email); err != nil {
+
 		c.JSON(404, gin.H{"error": "User not found"})
 		return
+	} else {
+		employee = *emp
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(employee.Password), []byte(body.Password)); err != nil {

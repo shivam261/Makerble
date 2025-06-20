@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github/shivam261/ClinicManagement/initializers"
 	"github/shivam261/ClinicManagement/models"
+	"github/shivam261/ClinicManagement/repositories"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,9 +10,11 @@ import (
 func GetAllPatients(c *gin.Context) {
 	// This function will return all the patients in the database
 	var patients []models.Patient
-	if err := initializers.DB.Find(&patients).Error; err != nil {
+	if pt, err := repositories.NewPatientRepository().FindAll(); err != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch patients"})
 		return
+	} else {
+		patients = pt
 	}
 	c.JSON(200, patients)
 }
@@ -25,7 +27,7 @@ func UpdatePatientById(c *gin.Context) {
 	}
 
 	id := c.Param("id")
-	if err := initializers.DB.Model(&models.Patient{}).Where("id = ?", id).Updates(patient).Error; err != nil {
+	if err := repositories.NewPatientRepository().UpdateByID(id, patient); err != nil {
 		c.JSON(500, gin.H{"error": "Pateint Not Found "})
 		return
 	}
