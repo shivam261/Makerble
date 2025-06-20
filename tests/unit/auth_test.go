@@ -45,8 +45,8 @@ func TestRegister_Success(t *testing.T) {
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
-	assert.Contains(t, w.Body.String(), "Doctor registered successfully")
+	assert.Equal(t, 201, w.Code)
+	assert.Contains(t, w.Body.String(), "doctor registered successfully")
 }
 
 func TestRegister_PasswordMismatch(t *testing.T) {

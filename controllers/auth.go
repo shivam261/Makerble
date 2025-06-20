@@ -53,6 +53,7 @@ func Register(c *gin.Context) {
 		c.JSON(409, gin.H{"error": "Failed to register " + body.Role + ". Try using a different email"})
 		return
 	}
+	c.JSON(201, gin.H{"message": body.Role + " registered successfully"})
 
 }
 func Login(c *gin.Context) {
