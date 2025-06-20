@@ -102,6 +102,6 @@ func Login(c *gin.Context) {
 }
 func Logout(c *gin.Context) {
 	// this function will logout the user by clearing the cookie
-	c.SetCookie("Authorization", "", -1, "/", "localhost", false, true)
+	c.SetCookie("Authorization", "", -1, "/", "localhost", true, true)
 	c.JSON(200, gin.H{"message": "Logout successful"})
 }
