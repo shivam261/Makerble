@@ -1,5 +1,13 @@
 # 🏥 Clinic Management System API
 
+## 📘 API Documentation
+
+All API endpoints are documented in Postman.  
+🔗 [View Live API Documentation](https://documenter.getpostman.com/view/33373776/2sB2xBCVFd)
+
+
+
+## Description 
 A backend API built using **Golang** and the **Gin** framework for managing clinic operations involving **Doctors**, **Receptionists**, and **Patients**. The project is structured  around clean architecture principles with a focus on:
 
 - ✅ **Repository Pattern** for abstraction
