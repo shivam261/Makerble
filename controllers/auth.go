@@ -95,13 +95,13 @@ func Login(c *gin.Context) {
 	}
 	initializers.RedisClient.Set(initializers.Ctx, tokenString, employee.Role, time.Minute*1)
 	println("Token stored in Redis with key:", initializers.RedisClient.Get(initializers.Ctx, tokenString).Val())
-	c.SetCookie("Authorization", tokenString, 3600, "/", "localhost", false, true)
+	c.SetCookie("Authorization", tokenString, 3600, "/", "", true, true)
 
 	c.JSON(200, gin.H{"message": "Login successful", "role": employee.Role})
 
 }
 func Logout(c *gin.Context) {
 	// this function will logout the user by clearing the cookie
-	c.SetCookie("Authorization", "", -1, "/", "localhost", true, true)
+	c.SetCookie("Authorization", "", -1, "/", "", true, true)
 	c.JSON(200, gin.H{"message": "Logout successful"})
 }
