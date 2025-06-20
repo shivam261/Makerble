@@ -14,7 +14,7 @@ A backend API built using **Golang** and the **Gin** framework for managing clin
 - 🔐 **JWT authentication**
 - 🧑‍⚕️ **Role-based access control**
 - ⚡ **Redis** integration for session caching and rate limiting
-
+- Deployed on Railway – Seamless CI/CD with environment support [live Backend link](https://makerble-production.up.railway.app)
 ---
 
 ## 🚀 Features
